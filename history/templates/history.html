@@ -1,0 +1,114 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+<div class="row">
+            <div class="col-lg-3 col-md-6 col-sm-6">
+              <div class="card card-stats">
+                <div class="card-header card-header-warning card-header-icon">
+                  <div class="card-icon">
+                    <i class="material-icons">trending_down</i>
+                  </div>
+                  <p class="card-category">Limite Basse</p>
+                  <h3 class="card-title">756
+                  </h3>
+                </div>
+                <div class="card-footer">
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-3 col-md-6 col-sm-6">
+              <div class="card card-stats">
+                <div class="card-header card-header-success card-header-icon">
+                  <div class="card-icon">
+                    <i class="material-icons">anchor</i>
+                  </div>
+                  <p class="card-category">Limite normale</p>
+                  <h3 class="card-title">8999</h3>
+                </div>
+                <div class="card-footer">
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-3 col-md-6 col-sm-6">
+              <div class="card card-stats">
+                <div class="card-header card-header-danger card-header-icon">
+                  <div class="card-icon">
+                    <i class="material-icons">error</i>
+                  </div>
+                  <p class="card-category">Limite dangereuse</p>
+                  <h3 class="card-title">75</h3>
+                </div>
+                <div class="card-footer">
+                </div>
+              </div>
+            </div>
+          </div>
+
+<div class="row">
+    <div class="col-lg-6 col-md-12">
+              <div class="card">
+                <div class="card-header card-header-primary">
+                  <h4 class="card-title">Filtrer</h4>
+                </div>
+                  <div class="card-body">
+                      <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                          <label onclick="filter2('day')" class="btn btn-primary active">
+                            <input type="radio" onclick="filter2(this.value)" name="options" value="day" id="option1"> Aujourd'hui
+                          </label>
+                          <label onclick="filter2('week')" class="btn btn-primary">
+                            <input type="radio" name="options" value="week" id="option2"> Cette semaine
+                          </label>
+                          <label onclick="filter2('month')" class="btn btn-primary">
+                            <input type="radio" name="options" value="month" id="option3"> Ce mois
+                          </label>
+                        </div>
+
+                      <form>
+                      <div class='col-6'>
+                          <div class="form-group">
+                        <label for="datetimepicker1"><i class="fa fa-calendar"></i> Date début</label>
+
+                        <input required class="form-control" type="date" id="datetimepicker1">
+                        <input required class="form-control" type="time" id="datetimepicker_1" value="00:00">
+
+                    </div>
+                </div>
+                <div class='col-6'>
+                    <div class="form-group">
+                        <label for="datetimepicker2"><i class="fa fa-calendar"></i> Date Fin</label>
+                       <input class="form-control" type="date" id="datetimepicker2">
+                        <input class="form-control" type="time" id="datetimepicker_2" value="00:00">
+                    </div>
+                </div>
+                      <button onclick="filter(event)" id="filter" class="btn btn-primary">Appliquer</button>
+                          </form>
+                  </div>
+              </div>
+</div>
+</div>
+<div class="row">
+  <div class="col-12">
+    <div class="card card-chart">
+      <div class="card-header card-header-primary" style="background: linear-gradient(60deg, #D2E7FF, #CDDBEA);">
+		<canvas id="canvas" data-url="{% url 'temp_all_api' %}"></canvas>
+      </div>
+      <div class="card-body">
+        <h4 class="card-title">Température</h4>
+        <p class="card-category">
+      </div>
+      <div class="card-footer">
+        <div class="stats">
+          <button class="btn btn-primary" onclick="resetZoom()">Réinitialiser le zoom</button>
+          <button class="btn btn-warning" onclick="clearChart()">Effacer les données</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<script src="{% static 'utils.js'%}"></script>
+<script src="{% static 'gethistory.js'%}"></script>
+{% endblock %}

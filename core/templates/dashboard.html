@@ -1,0 +1,179 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<script>
+  moment.locale('fr');  // Set the default/global locale
+  </script>
+<div class="row">
+  <button class="btn btn-warning" data-toggle="modal" data-target="#limiteModal">
+    Entrer les plages <span class="material-icons">tune</span>
+  </button>
+</div>
+
+<div class="row">
+  <div class="col-lg-3 col-md-6 col-sm-6">
+              <div class="card card-stats">
+                <div class="card-header card-header-warning card-header-icon">
+                  <div class="card-icon display-4 font-weight-bold">
+                    °C
+                  </div>
+                  <p class="card-category font-weight-bold">Température instantanée</p>
+                  <h3 class="card-title"> <span id="tempValue">66</span> ᵒC
+                  </h3>
+                </div>
+              </div>
+</div>
+
+</div>
+<div class="row align-items-center">
+  <div class="col-md-10 col-lg-6 col-sm-12 h-100">
+    <div class="card card-chart">
+      <div class="card-header card-header-primary" style="background: linear-gradient(60deg, #2E3436, #000000);">
+		<canvas id="canvas" data-url="{% url 'temp_api' %}"></canvas>
+      </div>
+      <div class="card-body">
+        <h4 class="card-title font-weight-bold">Température instantanée</h4>
+        <p class="card-category">
+      </div>
+      <div class="card-footer">
+        <div class="stats">
+          <button class="btn btn-primary" onclick="resetZoom(chart1)">réinitialiser le zoom</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-10 col-lg-6 col-sm-12 h-100">
+    <div class="card card-chart col-12">
+                <div class="card-header card-header-primary">
+                  <h4 class="card-title font-weight-bold">Répartition des différentes températures en pourcentage</h4>
+                  <div class="ct-chart" id="completedTasksChart"></div>
+                </div>
+                <div class="card-body">
+
+<!--                  <p class="card-category">Last Campaign Performance</p>-->
+                  <div class="row">
+      <div class="row align-items-center col-6">
+        <div class="col-12">
+    <div class="card card-chart m-0">
+      <div class="card-header card-header-primary m-0" style="background: linear-gradient(60deg, #2E3436, #000000);">
+        <h4 class="font-weight-bold">Jour</h4>
+		<canvas id="canvas3" data-url="{% url 'temp_api' %}"></canvas>
+      </div>
+    </div>
+  </div>
+        <div class="col-12">
+    <div class="card card-chart">
+      <div class="card-header card-header-primary m-0" style="background: linear-gradient(60deg, #2E3436, #000000);">
+        <h4 class="font-weight-bold">Mois</h4>
+		<canvas id="canvas5" class="p-0"></canvas>
+      </div>
+<!--      <div class="card-body">-->
+<!--        <h4 class="card-title">Pourcentage des températures au cours du mois</h4>-->
+<!--        <p class="card-category">-->
+<!--      </div>-->
+    </div>
+  </div>
+
+      </div>
+    <div class="row align-items-center col-6">
+
+
+      <div class="col-12">
+    <div class="card card-chart">
+      <div class="card-header card-header-primary" style="background: linear-gradient(60deg, #2E3436, #000000);">
+		<h4 class="font-weight-bold">Année</h4>
+        <canvas id="canvas4"></canvas>
+      </div>
+    </div>
+  </div>
+    </div>
+    </div>
+                </div>
+    </div>
+
+
+
+  </div>
+
+</div>
+
+
+<div class="row">
+  <div class="col-12">
+    <div class="card card-chart">
+      <div class="card-header" style="background: linear-gradient(60deg, #2E3436, #000000);">
+		<canvas id="canvas2" data-url="{% url 'temp_all_api' %}"></canvas>
+      </div>
+      <div class="card-body">
+        <h4 class="card-title">Température en année</h4>
+        <p class="card-category">
+      </div>
+      <div class="card-footer">
+        <div class="stats">
+          <button class="btn btn-primary" onclick="resetZoom(chart2)">réinitialiser le zoom</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!--Modals-->
+<div class="modal" id="limiteModal" tabindex="-1" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <form method="post" action="/dashboard/">
+        {% csrf_token %}
+      <div class="modal-header">
+        <h5 class="modal-title">Entrer les plages</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+
+        <div class="form-group">
+          <label class="text-primary">Température normale</label>
+          <div class="input-group">
+            <input  type="text" name="a" placeholder="a" id="a" value="{{limits.0}}" class="form-control">
+            <input type="text" name="b" value="{{limits.1}}" onchange="bb.value=this.value" placeholder="b"  class="form-control">
+          </div>
+             <small class="form-text text-muted">a&lt;T1&lt;b</small>
+          </div>
+
+        <div class="form-group">
+          <label class="text-primary">Température Alarme1</label>
+          <div class="input-group">
+            <input type="text" name="bb" disabled value="{{limits.1}}" placeholder="b"  class="form-control">
+            <input type="text" name="c"  onchange="cc.value=this.value" value="{{limits.2}}" placeholder="c" aria-label="a" class="form-control">
+          </div>
+             <small class="form-text text-muted">b&lt;T2&lt;c</small>
+          </div>
+
+        <div class="form-group">
+          <label class="text-primary">Température Arrêt</label>
+          <div class="input-group">
+            <input name="cc" disabled type="text" value="{{limits.2}}" placeholder="c" aria-label="a" class="form-control">
+            <input type="text" name="d" placeholder="d" value="{{limits.3}}" aria-label="b" class="form-control">
+          </div>
+             <small id="emailHelp" class="form-text text-muted">c&lt;T3&lt;d</small>
+          </div>
+
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
+        <button type="submit" class="btn btn-primary">Enregistrer les changements</button>
+      </div>
+        </div>
+        </form>
+  </div>
+</div>
+</div>
+<script type="text/javascript">
+    var queryset = JSON.parse('{{queryset|safe}}');
+    var LIMITS = ['{{limits.0}}', '{{limits.1}}', '{{limits.2}}', '{{limits.3}}'];
+</script>
+<script src="{% static 'doughnutchart.js'%}"></script>
+<script src="{% static 'chartyearline.js'%}"></script>
+<script src="{% static 'chartstackbar.js'%}"></script>
+<script src="{% static 'myscript2.js'%}"></script>
+{% endblock %}

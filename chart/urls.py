@@ -5,22 +5,35 @@ The `urlpatterns` list routes URLs to views. For more information please see:
 Examples:
 Function views
     1. Add an import:  from my_app import views
-    2. Add a URL to urlpatterns:  path('', views.home, name='home')
+    2. Add a URL to urlpatterns:  path('', views.history, name='history')
 Class-based views
     1. Add an import:  from other_app.views import Home
-    2. Add a URL to urlpatterns:  path('', Home.as_view(), name='home')
+    2. Add a URL to urlpatterns:  path('', Home.as_view(), name='history')
 Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
+from django.conf.urls.static import static
 from django.urls import path
-from core import views
+
+from chart import settings
+from chart.task import SerialThread
+from core import views as core_views
+from history import views as history_views
+
 
 urlpatterns = [
-path('', views.home, name='home'),
-    path('population-chart/', views.population_chart, name='population-chart'),
-    path('pie-chart/', views.pie_chart, name='pie-chart'),
-    path('line/', views.line_chart, name='line'),
+path('', core_views.dashboard, name='home'),
+    path('dashboard/', core_views.dashboard, name='dashboard'),
+    path('history/', history_views.history, name='history'),
+    path('population-chart/', core_views.population_chart, name='population-chart'),
+    path('temp_all_api/', history_views.temp_all_api, name='temp_all_api'),
+    path('temp_last_data/', core_views.temp_api, name='temp_api'),
+    path('pie-chart/', core_views.pie_chart, name='pie-chart'),
+    path('line/', core_views.line_chart, name='line'),
     path('admin/', admin.site.urls),
-]
+] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+
+# thread = SerialThread()
+# thread.start()

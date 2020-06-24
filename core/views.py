@@ -1,13 +1,33 @@
+import json
+
 from django.shortcuts import render
 from django.db.models import Sum
 from django.http import JsonResponse
+from django.utils import timezone
+from .models import *
+from random import randrange
 
-from core.models import City
+thread = None
+
+def dashboard(request):
+    global LIMITS
+    if request.POST:
+        data = request.POST
+        LIMITS = [data.get('a'), data.get('b'), data.get('c'), data.get('d')]
+    paths = ['/', '/dashboard/']
+    data = []
+    queryset = Temperature.objects.filter(created_at__year=timezone.now().year)
+    data = map(lambda x: {'date':x.created_at.isoformat(), 'value':x.value}, queryset)
+    return render(request, 'dashboard.html',
+                  {'paths': paths, 'queryset': json.dumps(list(data)), 'limits': LIMITS}
+                  )
 
 
-def home(request):
-    return render(request, 'home.html')
-
+def temp_api(request):
+    return JsonResponse(data={
+        # 'data': thread.q.get()
+        'data': {'value':randrange(30)}
+    })
 
 def population_chart(request):
     labels = []
