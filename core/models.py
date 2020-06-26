@@ -12,9 +12,10 @@ class City(models.Model):
 
 
 class Temperature(models.Model):
-    created_at = models.DateTimeField()
-    value = models.IntegerField(blank=False)
+    created_at = models.DateTimeField(auto_now_add=True)
+    value = models.FloatField(blank=False)
 
 
 # Limits
-LIMITS = [14, 18, 21, 23]
+LIMITS = [14, 18, 21, 23, 15]
+MARGE = 0.5

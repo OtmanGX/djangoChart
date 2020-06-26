@@ -4,53 +4,10 @@
 {% block content %}
 
 <div class="row">
-            <div class="col-lg-3 col-md-6 col-sm-6">
-              <div class="card card-stats">
-                <div class="card-header card-header-warning card-header-icon">
-                  <div class="card-icon">
-                    <i class="material-icons">trending_down</i>
-                  </div>
-                  <p class="card-category">Limite Basse</p>
-                  <h3 class="card-title">756
-                  </h3>
-                </div>
-                <div class="card-footer">
-                </div>
-              </div>
-            </div>
-            <div class="col-lg-3 col-md-6 col-sm-6">
-              <div class="card card-stats">
-                <div class="card-header card-header-success card-header-icon">
-                  <div class="card-icon">
-                    <i class="material-icons">anchor</i>
-                  </div>
-                  <p class="card-category">Limite normale</p>
-                  <h3 class="card-title">8999</h3>
-                </div>
-                <div class="card-footer">
-                </div>
-              </div>
-            </div>
-            <div class="col-lg-3 col-md-6 col-sm-6">
-              <div class="card card-stats">
-                <div class="card-header card-header-danger card-header-icon">
-                  <div class="card-icon">
-                    <i class="material-icons">error</i>
-                  </div>
-                  <p class="card-category">Limite dangereuse</p>
-                  <h3 class="card-title">75</h3>
-                </div>
-                <div class="card-footer">
-                </div>
-              </div>
-            </div>
-          </div>
-
-<div class="row">
     <div class="col-lg-6 col-md-12">
               <div class="card">
-                <div class="card-header card-header-primary">
-                  <h4 class="card-title">Filtrer</h4>
+                <div class="card-header card-header-warning">
+                  <h4 class="card-title">Historique température selon besoin</h4>
                 </div>
                   <div class="card-body">
                       <div class="btn-group btn-group-toggle" data-toggle="buttons">
@@ -58,10 +15,10 @@
                             <input type="radio" onclick="filter2(this.value)" name="options" value="day" id="option1"> Aujourd'hui
                           </label>
                           <label onclick="filter2('week')" class="btn btn-primary">
-                            <input type="radio" name="options" value="week" id="option2"> Cette semaine
+                            <input type="radio" name="options" value="week" id="option2">  Semaine
                           </label>
                           <label onclick="filter2('month')" class="btn btn-primary">
-                            <input type="radio" name="options" value="month" id="option3"> Ce mois
+                            <input type="radio" name="options" value="month" id="option3"> Mois
                           </label>
                         </div>
 
@@ -82,7 +39,7 @@
                         <input class="form-control" type="time" id="datetimepicker_2" value="00:00">
                     </div>
                 </div>
-                      <button onclick="filter(event)" id="filter" class="btn btn-primary">Appliquer</button>
+                      <button onclick="filter(event)" id="filter" class="btn btn-warning">Appliquer</button>
                           </form>
                   </div>
               </div>
@@ -101,7 +58,6 @@
       <div class="card-footer">
         <div class="stats">
           <button class="btn btn-primary" onclick="resetZoom()">Réinitialiser le zoom</button>
-          <button class="btn btn-warning" onclick="clearChart()">Effacer les données</button>
         </div>
       </div>
     </div>
@@ -110,5 +66,5 @@
 
 
 <script src="{% static 'utils.js'%}"></script>
-<script src="{% static 'gethistory.js'%}"></script>
+<!--<script src="{% static 'gethistory.js'%}"></script>-->
 {% endblock %}

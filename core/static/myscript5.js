@@ -180,6 +180,7 @@ function generateLineConfig(data, annotations) {
             legend: {
                 display:true,
             },
+            showLine: false,
             responsive: true,
             annotation: {
                 annotations: annotations
@@ -195,6 +196,9 @@ function generateLineConfig(data, annotations) {
             },
             scales: {
                 xAxes: [{
+                    gridLines: {
+                        display:false
+                    },
                     type: 'time',
 
                 time: {
@@ -215,6 +219,7 @@ function generateLineConfig(data, annotations) {
                         autoSkip: true,
                         beginAtZero: true,
                         autoSkipPadding: 75,
+                        minRotation: 0,
                         maxRotation: 0,
                         sampleSize: 100
                     },
@@ -248,6 +253,9 @@ function generateLineConfig(data, annotations) {
                     }
                 }],
                 yAxes: [{
+                    gridLines: {
+                        display:false
+                    },
                     stacked: false,
                     ticks:{
                         fontColor: '#ffffff',
@@ -280,8 +288,10 @@ function generateLineConfig(data, annotations) {
             },
             hover: {
                 mode: 'nearest',
-                intersect: true
+                intersect: true,
+                animationDuration: 0
             },
+            responsiveAnimationDuration: 0,
             plugins: {
 
                 ChartDataLabels:false,
@@ -289,10 +299,10 @@ function generateLineConfig(data, annotations) {
                     // Container for pan options
                     pan: {
                         // Boolean to enable panning
-                        enabled: true,
+                        enabled: false,
 
                         // Panning directions. Remove the appropriate direction to disable
-                        // Eg. 'y' would only allow panning in the y direction
+                        // Eg. 'y' would only allow panning in tminRotationhe y direction
                         mode: 'xy',
                         rangeMin: {
                             // Format of min pan range depends on scale type
@@ -320,7 +330,7 @@ function generateLineConfig(data, annotations) {
                     // Container for zoom options
                     zoom: {
                         // Boolean to enable zooming
-                        enabled: true,
+                        enabled: false,
 
                         // Enable drag-to-zoom behavior
 //                    drag: true,
@@ -421,8 +431,7 @@ var ajax_call = function () {
         url: $lineChart.data("url"),
 
         success: function (data) {
-            date.add(1, unit);
-            newValue(chart1, date, data.data.value, 0);
+            newValue(chart1, new Date(data.data.date), data.data.value, 0);
             tempValue.text(data.data.value);
 //            $.each(data.data, function (i, d) {
 //                addData(chart, data.labels[i], d);
@@ -438,7 +447,6 @@ var ajax_call2 = function () {
 
 //        newValue2(chart2);
             $.each(data.data, function (i, d) {
-
 //                 if (i===0 || i===data.data.length)
 //                for (var j=0; j<4;j++) newValue(chart2, new Date(d.date), fixedData[j], j);
                 newValue(chart2, new Date(d.date), d.value);
@@ -449,11 +457,11 @@ var ajax_call2 = function () {
 
 async function call2() {
     var data = queryset;
+    console.log(queryset.length);
     $.each(data, function (i, d) {
-        if (i===0 || i===data.length-1) {
+        if (i===0 || i===data.length-1)
             for (var j=0; j<4;j++) newValue(chart2, new Date(d.date), fixedData[j], j);
-        }
-        newValue(chart2, new Date(d.date), d.value);
+        newValue(chart2, new Date(d.date), d.value, 4, false);
     });
     var datomax = moment();
     datomax.set({'year': 2020, 'month': 11});
@@ -467,7 +475,7 @@ ajax_call();
 //newValue2(chart2)
 //ajax_call2();
 //newValue2(chart2)
-var interval = 1000; // 1 secs
+var interval = 500; // 1 secs
 setInterval(ajax_call, interval);
 
 window.resetZoom = function(chart) {

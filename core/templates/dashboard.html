@@ -1,13 +1,15 @@
 {% extends 'base.html' %}
 {% load static %}
-
+{% block title_brand %}
+Tableau de Bord
+{% endblock %}
 {% block content %}
-<script>
-  moment.locale('fr');  // Set the default/global locale
-  </script>
 <div class="row">
   <button class="btn btn-warning" data-toggle="modal" data-target="#limiteModal">
-    Entrer les plages <span class="material-icons">tune</span>
+    Plages températures <span class="material-icons">tune</span>
+  </button>
+  <button class="btn btn-success" data-toggle="modal" data-target="#margeModal">
+    Marge stockage température <span class="material-icons">tune</span>
   </button>
 </div>
 
@@ -65,7 +67,7 @@
         <div class="col-12">
     <div class="card card-chart">
       <div class="card-header card-header-primary m-0" style="background: linear-gradient(60deg, #2E3436, #000000);">
-        <h4 class="font-weight-bold">Mois</h4>
+        <h4 class="font-weight-bold">Mois courant</h4>
 		<canvas id="canvas5" class="p-0"></canvas>
       </div>
 <!--      <div class="card-body">-->
@@ -82,7 +84,7 @@
       <div class="col-12">
     <div class="card card-chart">
       <div class="card-header card-header-primary" style="background: linear-gradient(60deg, #2E3436, #000000);">
-		<h4 class="font-weight-bold">Année</h4>
+		<h4 class="font-weight-bold">Année en cours</h4>
         <canvas id="canvas4"></canvas>
       </div>
     </div>
@@ -106,7 +108,7 @@
 		<canvas id="canvas2" data-url="{% url 'temp_all_api' %}"></canvas>
       </div>
       <div class="card-body">
-        <h4 class="card-title">Température en année</h4>
+        <h4 class="card-title font-weight-bold">Température annuelle</h4>
         <p class="card-category">
       </div>
       <div class="card-footer">
@@ -135,17 +137,24 @@
         <div class="form-group">
           <label class="text-primary">Température normale</label>
           <div class="input-group">
-            <input  type="text" name="a" placeholder="a" id="a" value="{{limits.0}}" class="form-control">
-            <input type="text" name="b" value="{{limits.1}}" onchange="bb.value=this.value" placeholder="b"  class="form-control">
+            <input  type="text" name="a" required placeholder="a" id="a" value="{{limits.0}}" class="form-control">
+            <input type="text" name="b" required value="{{limits.1}}" onchange="bb.value=this.value" placeholder="b"  class="form-control">
           </div>
              <small class="form-text text-muted">a&lt;T1&lt;b</small>
+          </div>
+
+        <div class="form-group">
+          <label class="text-primary">Température Idéal</label>
+          <div class="input-group">
+            <input  type="text" name="ideal" required placeholder="a" id="ideal" value="{{limits.4}}" class="form-control">
+          </div>
           </div>
 
         <div class="form-group">
           <label class="text-primary">Température Alarme1</label>
           <div class="input-group">
             <input type="text" name="bb" disabled value="{{limits.1}}" placeholder="b"  class="form-control">
-            <input type="text" name="c"  onchange="cc.value=this.value" value="{{limits.2}}" placeholder="c" aria-label="a" class="form-control">
+            <input type="text" name="c" required  onchange="cc.value=this.value" value="{{limits.2}}" placeholder="c" aria-label="a" class="form-control">
           </div>
              <small class="form-text text-muted">b&lt;T2&lt;c</small>
           </div>
@@ -154,7 +163,7 @@
           <label class="text-primary">Température Arrêt</label>
           <div class="input-group">
             <input name="cc" disabled type="text" value="{{limits.2}}" placeholder="c" aria-label="a" class="form-control">
-            <input type="text" name="d" placeholder="d" value="{{limits.3}}" aria-label="b" class="form-control">
+            <input type="text" name="d" required placeholder="d" value="{{limits.3}}" aria-label="b" class="form-control">
           </div>
              <small id="emailHelp" class="form-text text-muted">c&lt;T3&lt;d</small>
           </div>
@@ -168,9 +177,36 @@
   </div>
 </div>
 </div>
+
+<div class="modal" id="margeModal" tabindex="-1" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <form method="post" action="/dashboard/">
+        {% csrf_token %}
+      <div class="modal-header">
+        <h5 class="modal-title">Entrer le seuil de stockage</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+
+        <div class="form-group">
+          <input type="text" value="{{marge}}" name="marge" class="form-control">
+             <small class="form-text text-muted">Par défaut 0.5</small>
+        </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
+        <button type="submit" class="btn btn-primary">Enregistrer les changements</button>
+      </div>
+        </div>
+        </form>
+  </div>
+</div>
+</div>
 <script type="text/javascript">
     var queryset = JSON.parse('{{queryset|safe}}');
-    var LIMITS = ['{{limits.0}}', '{{limits.1}}', '{{limits.2}}', '{{limits.3}}'];
+    var LIMITS = ['{{limits.0}}', '{{limits.1}}', '{{limits.2}}', '{{limits.3}}', '{{limits.4}}'];
 </script>
 <script src="{% static 'doughnutchart.js'%}"></script>
 <script src="{% static 'chartyearline.js'%}"></script>

@@ -326,7 +326,7 @@ function removeData(chart) {
 var $lineChart = $('#canvas');
 var ctx = $lineChart[0].getContext("2d");
 var tempValue = $('#tempValue');
-var chart = new Chart.Line(ctx, cfg);
+//var chart = new Chart.Line(ctx, cfg);
 
 function recreateChart() {
     $lineChart = $('#canvas');
@@ -364,7 +364,7 @@ var ajax_call = function (url) {
         }
     });
 };
-ajax_call($lineChart.data("url"));
+//ajax_call($lineChart.data("url"));
 function filter(event) {
         var date1 = $("#datetimepicker1");
         console.log(date1);

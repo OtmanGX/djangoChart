@@ -12,7 +12,7 @@
         Tip 2: you can also add an image using data-image tag
     -->
       <div class="logo"><a href="/" class="simple-text logo-normal">
-          Sys AMDIL
+          Sys AMDIL TRAN
         </a></div>
       <div class="sidebar-wrapper">
         <ul class="nav">
@@ -22,12 +22,34 @@
               <p>Tableau de bord</p>
             </a>
           </li>
-          <li class="nav-item {% if request.path == '/history/' %}active{% endif %}">
-            <a class="nav-link" href="{% url 'history' %}">
+
+
+          <li class="nav-item">
+            <a class="nav-link" href="#" data-toggle="collapse" data-target="#navbarToggleExternalContent" aria-controls="navbarToggleExternalContent" aria-expanded="false" aria-label="Toggle navigation">
               <i class="material-icons">history</i>
               <p>Historique</p>
             </a>
           </li>
+
+          <div class="ml-4 collapse" id="navbarToggleExternalContent">
+              <ul class="nav">
+                <li class="nav-item  {% if request.path == '/history/' %}active{% endif %}">
+                <a class="nav-link" href="{% url 'history' %}">
+                  <i class="material-icons">history</i>
+                  <p>Historique générale</p>
+                </a>
+                </li>
+
+                <li class="nav-item  {% if request.path == '/history_alarm/' %}active{% endif %}">
+                <a class="nav-link" href="{% url 'history_alarm' %}">
+                  <i class="material-icons">history</i>
+                  <p>Historique Alarmes</p>
+                </a>
+                </li>
+              </ul>
+          </div>
+
+
         </ul>
       </div>
     </div>
@@ -36,7 +58,8 @@
       <nav class="navbar navbar-expand-lg navbar-transparent navbar-absolute fixed-top ">
         <div class="container-fluid">
           <div class="navbar-wrapper">
-            <a class="navbar-brand" href="javascript:;">Dashboard</a>
+            <a class="navbar-brand" href="#">{% block title_brand %}
+            {% endblock %}</a>
           </div>
           <button class="navbar-toggler" type="button" data-toggle="collapse" aria-controls="navigation-index" aria-expanded="false" aria-label="Toggle navigation">
             <span class="sr-only">Toggle navigation</span>
@@ -157,35 +180,6 @@
 
   <script src="{% static 'js/core/popper.min.js' %}"></script>
   <script src="{% static 'js/core/bootstrap-material-design.min.js' %}"></script>
-<!--  <script src="{% static 'js/plugins/perfect-scrollbar.jquery.min.js' %}"></script>-->
-<!--  &lt;!&ndash;  Plugin for Sweet Alert &ndash;&gt;-->
-<!--  <script src="{% static 'js/plugins/sweetalert2.js' %}"></script>-->
-<!--  &lt;!&ndash; Forms Validations Plugin &ndash;&gt;-->
-<!--  <script src="{% static 'js/plugins/jquery.validate.min.js' %}"></script>-->
-<!--  &lt;!&ndash; Plugin for the Wizard, full documentation here: https://github.com/VinceG/twitter-bootstrap-wizard &ndash;&gt;-->
-<!--  <script src="{% static 'js/plugins/jquery.bootstrap-wizard.js' %}"></script>-->
-<!--  &lt;!&ndash;	Plugin for Select, full documentation here: http://silviomoreto.github.io/bootstrap-select &ndash;&gt;-->
-<!--  <script src="{% static 'js/plugins/bootstrap-selectpicker.js' %}"></script>-->
-<!--  &lt;!&ndash;  Plugin for the DateTimePicker, full documentation here: https://eonasdan.github.io/bootstrap-datetimepicker/ &ndash;&gt;-->
-<!--&lt;!&ndash;  <script src="{% static 'js/plugins/bootstrap-datetimepicker.min.js' %}"></script>&ndash;&gt;-->
-<!--  &lt;!&ndash;  DataTables.net Plugin, full documentation here: https://datatables.net/  &ndash;&gt;-->
-<!--  <script src="{% static 'js/plugins/jquery.dataTables.min.js' %}"></script>-->
-<!--  &lt;!&ndash;	Plugin for Tags, full documentation here: https://github.com/bootstrap-tagsinput/bootstrap-tagsinputs  &ndash;&gt;-->
-<!--  <script src="{% static 'js/plugins/bootstrap-tagsinput.js' %}"></script>-->
-<!--  &lt;!&ndash; Plugin for Fileupload, full documentation here: http://www.jasny.net/bootstrap/javascript/#fileinput &ndash;&gt;-->
-<!--  <script src="{% static 'js/plugins/jasny-bootstrap.min.js' %}"></script>-->
-<!--  &lt;!&ndash;  Full Calendar Plugin, full documentation here: https://github.com/fullcalendar/fullcalendar    &ndash;&gt;-->
-<!--  <script src="{% static 'js/plugins/fullcalendar.min.js' %}"></script>-->
-<!--  &lt;!&ndash; Vector Map plugin, full documentation here: http://jvectormap.com/documentation/ &ndash;&gt;-->
-<!--  <script src="{% static 'js/plugins/jquery-jvectormap.js' %}"></script>-->
-<!--  &lt;!&ndash;  Plugin for the Sliders, full documentation here: http://refreshless.com/nouislider/ &ndash;&gt;-->
-<!--  <script src="{% static 'js/plugins/nouislider.min.js' %}"></script>-->
-<!--  &lt;!&ndash; Include a polyfill for ES6 Promises (optional) for IE11, UC Browser and Android browser support SweetAlert &ndash;&gt;-->
-<!--  <script src="https://cdnjs.cloudflare.com/ajax/libs/core-js/2.4.1/core.js"></script>-->
-<!--  &lt;!&ndash; Library for adding dinamically elements &ndash;&gt;-->
-<!--  <script src="{% static 'js/plugins/arrive.min.js' %}"></script>-->
-  <!-- Chartist JS -->
-<!--  <script src="{% static 'js/plugins/chartist.min.js' %}"></script>-->
   <!--  Notifications Plugin    -->
   <script src="{% static 'js/plugins/bootstrap-notify.js' %}"></script>
   <!-- Control Center for Material Dashboard: parallax effects, scripts for the example pages etc -->

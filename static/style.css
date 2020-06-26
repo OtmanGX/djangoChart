@@ -1,0 +1,11 @@
+#table-wrapper {
+  position:relative;
+}
+#table_body {
+  height:200px;
+  overflow:auto;
+  margin-top:20px;
+}
+#table-wrapper table {
+  width:100%;
+}

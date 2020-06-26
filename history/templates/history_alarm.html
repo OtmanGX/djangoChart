@@ -1,0 +1,97 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title_brand %}
+Historique Alarme
+{% endblock %}
+{% block content %}
+
+
+<div class="row">
+  <div class="col-lg-4 col-md-6 col-sm-8">
+              <div class="card card-stats" style="background: linear-gradient(60deg, #2E3436, #000000);">
+                <div class="card-body">
+                  <canvas id="canvas1"></canvas>
+                </div>
+              </div>
+  </div>
+
+  <div class="col-lg-4 col-md-6 col-sm-8">
+              <div class="card card-stats" style="background: linear-gradient(60deg, #2E3436, #000000);">
+                <div class="card-body">
+                  <canvas id="canvas2"></canvas>
+                </div>
+              </div>
+  </div>
+
+  <div class="col-lg-4 col-md-6 col-sm-8" >
+              <div class="card card-stats" style="background: linear-gradient(60deg, #2E3436, #000000);">
+                <div class="card-body">
+                  <canvas id="canvas3"></canvas>
+                </div>
+              </div>
+  </div>
+
+</div>
+
+
+<div class="row">
+  <div class="card">
+                <div class="card-header card-header-warning">
+                  <h4 class="card-title ">Historique Plages températures</h4>
+                  <p class="card-category font-weight-bold"> Les plages de différentes températures</p>
+                </div>
+                <div class="card-body">
+                  <div class="table-responsive">
+                    <table class="table table-hover">
+                      <thead class=" text-primary font-weight-bold">
+                        <th>
+                          Plages
+                        </th>
+                        <th>
+                          Date début
+                        </th>
+                        <th>
+                          Date Fin
+                        </th>
+                        <th>
+                          Durée
+                        </th>
+                      </thead>
+                      <tbody style="height:400px; overflow: scroll;">
+                      {% for item in data %}
+
+                        <tr class="{% if item.0 == 0 %}table-success{% else %}
+                        {% if item.0 == 1%}table-warning
+                        {% else %}
+                        {% if item.0 == 2%}table-danger
+                        {% endif %}{% endif %}{% endif %}">
+                          <td>
+                            {{item.1}}
+                          </td>
+                          <td>
+                            {{item.2|date:'d M Y H:m:s'}}
+                          </td>
+                          <td>
+                            {{item.3|date:"d M Y H:m:s"}}
+                          </td>
+                          <td>
+                            {{ item.4 }}
+                          </td>
+                        </tr>
+                      {% endfor %}
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+  </div>
+</div>
+<script src="{% static 'chartbar.js'%}"></script>
+<!--<script type="text/javascript">-->
+<!--    var queryset = JSON.parse('{{queryset|safe}}');-->
+<!--    var LIMITS = ['{{limits.0}}', '{{limits.1}}', '{{limits.2}}', '{{limits.3}}', '{{limits.4}}'];-->
+<!--</script>-->
+<!--<script src="{% static 'doughnutchart.js'%}"></script>-->
+<!--<script src="{% static 'chartyearline.js'%}"></script>-->
+<!--<script src="{% static 'chartstackbar.js'%}"></script>-->
+<!--<script src="{% static 'myscript2.js'%}"></script>-->
+{% endblock %}

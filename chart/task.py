@@ -4,13 +4,16 @@ import serial
 import time
 import re
 from core.models import Temperature
+from datetime import datetime
 
+from django.utils import timezone
 
 SERIAL_PORT = "/dev/ttyACM0"
 
 
 class TemperatureMsg:
-    regex = re.compile(r"S;\d+(;[01]){3};F")
+    regex = re.compile(r"S;\d+;\d+;[01];\d+;F")
+    lastValue = 0
 
     def __new__(cls, tram):
         if cls.regex.search(tram) is None:
@@ -20,9 +23,13 @@ class TemperatureMsg:
 
     def __init__(self, msg):
         self.msg = msg
-        self.temp = int(msg.split(";")[1])/100
-        obj = self.save()
-        self.date = obj.created_at
+        self.temp = float(msg.split(";")[1])/100
+        self.date = datetime.now(tz=timezone.utc)
+        if abs(self.temp-TemperatureMsg.lastValue) > 0.5:
+            self.save()
+            TemperatureMsg.lastValue = self.temp
+        # obj = self.save()
+        # self.date = obj.created_at
 
     def save(self):
         return Temperature.objects.create(value=self.temp)
@@ -37,7 +44,7 @@ class TemperatureMsg:
 class SerialThread(Thread):
     def __init__(self):
         super().__init__(name="serialThread")
-        self.q = Queue(maxsize=3)
+        self.q = Queue(maxsize=1)
         self.count = 0
     def run(self):
         ser = None
@@ -49,13 +56,12 @@ class SerialThread(Thread):
                 if ser is not None :
                     tram = ser.readline().decode().strip()
                     print(tram)
-                    # t = TemperatureMsg(tram)
-                    # if t is not None :
-                    #     if self.q.full():
-                    #         self.q.get()
-                    #     self.q.put_nowait(t.get())
-                    #     t.save()
-                    time.sleep(2)
+                    t = TemperatureMsg(tram)
+                    if t is not None :
+                        if self.q.full():
+                            self.q.get()
+                        self.q.put_nowait(t.get())
+                        # t.save()
             except Exception as e:
                 ser = None
                 print(e)
@@ -64,5 +70,6 @@ class SerialThread(Thread):
 
 
 if __name__=='__main__':
-    SerialThread().start()
+    datetime.now(tz=timezone.utc)
+    # SerialThread().start()
 

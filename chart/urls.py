@@ -19,21 +19,20 @@ from django.urls import path
 
 from chart import settings
 from chart.task import SerialThread
+thread = SerialThread()
+thread.start()
 from core import views as core_views
 from history import views as history_views
 
 
 urlpatterns = [
-path('', core_views.dashboard, name='home'),
-    path('dashboard/', core_views.dashboard, name='dashboard'),
-    path('history/', history_views.history, name='history'),
-    path('population-chart/', core_views.population_chart, name='population-chart'),
+    path('admin/', admin.site.urls),
+    # Core
+    path('', core_views.dashboard, name='home'),
     path('temp_all_api/', history_views.temp_all_api, name='temp_all_api'),
     path('temp_last_data/', core_views.temp_api, name='temp_api'),
-    path('pie-chart/', core_views.pie_chart, name='pie-chart'),
-    path('line/', core_views.line_chart, name='line'),
-    path('admin/', admin.site.urls),
+    path('dashboard/', core_views.dashboard, name='dashboard'),
+    # History
+    path('history/', history_views.history, name='history'),
+    path('history_alarm/', history_views.history_alarm, name='history_alarm'),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
-
-# thread = SerialThread()
-# thread.start()
