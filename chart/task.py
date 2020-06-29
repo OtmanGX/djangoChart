@@ -45,7 +45,7 @@ class TemperatureMsg:
 class SerialThread(Thread):
     def __init__(self):
         super().__init__(name="serialThread")
-        self.q = Queue(maxsize=1)
+        self.q = Queue(maxsize=3)
         self.count = 0
     def run(self):
         ser = None
@@ -56,12 +56,12 @@ class SerialThread(Thread):
                     time.sleep(2)
                 if ser is not None :
                     tram = ser.readline().decode().strip()
-                    print(tram)
                     t = TemperatureMsg(tram)
                     if t is not None :
+                        print(t.temp)
                         if self.q.full():
                             self.q.get()
-                        self.q.put_nowait(t.get())
+                        self.q.put(t.get())
                         # t.save()
             except Exception as e:
                 ser = None

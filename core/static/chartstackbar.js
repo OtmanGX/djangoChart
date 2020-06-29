@@ -4,19 +4,19 @@ var barChartData = {
 				label: 'T Normale %',
 				backgroundColor: window.chartColors.green2,
 				data: [
-					90,
+					barData[2][0],
 				]
 			}, {
 				label: 'Seuil 2 %',
 				backgroundColor: window.chartColors.orange,
 				data: [
-					9,
+					barData[2][1],
 				]
 			}, {
 				label: 'Seuil 3 %',
-				backgroundColor: window.chartColors.red,
+				backgroundColor: window.chartColors.red2,
 				data: [
-					1,
+					barData[2][2],
 				]
 			}]
 

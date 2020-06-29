@@ -245,8 +245,6 @@ function generateLineConfig(title, data, annotations) {
                 }],
                 yAxes: [{
                     sampleSize: 10,
-//                    min: 0,
-//                    max: 30,
 //                    stepSize: 1,
                     gridLines: {
                         display: false,
@@ -256,8 +254,8 @@ function generateLineConfig(title, data, annotations) {
                     ticks: {
                         autoSkip: true,
                         stepSize: 1,
-                        min: 0,
-                        max: 30
+                        min: fixedData[0]-2,
+                        max: 26
                     },
                     display: true,
                     type: 'linear',
@@ -296,13 +294,13 @@ function generateLineConfig(title, data, annotations) {
 
                         // Panning directions. Remove the appropriate direction to disable
                         // Eg. 'y' would only allow panning in the y direction
-                        mode: 'xy'
+                        mode: 'x'
                 },
                     zoom: {
                         drag: false,
                         enabled: true,
 //                        drag: dragOptions,
-//                        mode: 'x',
+                        mode: 'x',
                         speed: 0.05
                     }
                 }
@@ -365,6 +363,7 @@ var ajax_call = function () {
         url: $lineChart.data("url"),
 
         success: function (data) {
+            console.log(data);
             newValue(chart1, new Date(data.data.date), data.data.value, 0);
             tempValue.text(data.data.value);
 //            $.each(data.data, function (i, d) {
@@ -418,3 +417,10 @@ window.resetZoom = function (chart) {
 window.clearChart = function () {
     chart.clear();
 };
+
+function displayTime() {
+    $("#timeValue").text(moment().format("D-MM-Y H:m:ss"));
+}
+
+var interval = 1000; // 1 secs
+setInterval(displayTime, interval);

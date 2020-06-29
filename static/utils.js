@@ -5,7 +5,7 @@ Chart.plugins.unregister(ChartDataLabels);
 window.dataLabelsConfig = {
                         align:'start',
                         display: 'auto',
-                        clamp:true,
+                        clamp:false,
                         backgroundColor: function(context) {
 							return context.dataset.backgroundColor;
 						},

@@ -53,7 +53,10 @@ def temp_all_api(request):
         date1 = request.GET.get("date1")
         date1 = string_to_date(date1)
         date2 = request.GET.get("date2")
-        date2 = string_to_date(date2)
+        try:
+            date2 = string_to_date(date2)
+        except ValueError:
+            date2 = None
         if date1 and date2:
             data = Temperature.objects.filter(created_at__range=(date1, date2))
         elif date1:
@@ -110,6 +113,15 @@ def calc_stats(dataframe):
 
     return result['duree'].tolist()
 
+def calc_stats2(dataframe):
+    result = dataframe[['cat', 'duree']].groupby('cat').sum()
+    result['duree'] = result['duree'].astype('timedelta64[h]')
+    result['duree'] = result['duree']/result['duree'].sum()*100
+    result['duree'] = result['duree'].astype('int')
+    result.fillna(0)
+
+    return result['duree'].tolist()
+
 
 def history_alarm(request):
     filter = request.GET.get("filter")
@@ -137,7 +149,10 @@ def history_alarm(request):
         date1 = request.GET.get("date1")
         date1 = string_to_date(date1)
         date2 = request.GET.get("date2")
-        date2 = string_to_date(date2)
+        try:
+            date2 = string_to_date(date2)
+        except ValueError:
+            date2 = None
         if date1 and date2:
             data = classify_temperatures(Temperature.objects.filter(created_at__range=(date1, date2)))
         elif date1:
@@ -183,5 +198,6 @@ def history_alarm(request):
                       groupby(data, lambda x: x.cat))
         resData = generate_dataframe(resData)
         table_res = generate_dataframe(resData)
+        table_res.sort_values(by='first_date', ascending=True)
 
-    return render(request, 'history_alarm.html', {'data': table_res.values.tolist(), 'barData': bar_result})
+    return render(request, 'history_alarm.html', {'data': table_res.sort_values(by='first_date', ascending=False).values.tolist(), 'barData': bar_result})
