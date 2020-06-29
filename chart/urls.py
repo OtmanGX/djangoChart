@@ -19,8 +19,8 @@ from django.urls import path
 
 from chart import settings
 from chart.task import SerialThread
-thread = SerialThread()
-thread.start()
+# thread = SerialThread()
+# thread.start()
 from core import views as core_views
 from history import views as history_views
 

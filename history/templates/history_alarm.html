@@ -35,25 +35,79 @@ Historique Alarme
 
 
 <div class="row">
+    <div class="col-lg-6 col-md-12">
+              <div class="card">
+                <div class="card-header card-header-info">
+                  <h4 class="card-title font-weight-bold">Historique Plages température selon besoin</h4>
+                </div>
+                  <div class="card-body">
+                      <h5 class="text-primary">
+                          Choix automatique
+                      </h5>
+                      <div class="ml-3 mb-3">
+                      <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                          <label onclick="filter2('day')" class="btn btn-primary">
+                            <input type="radio" onclick="filter2(this.value)" name="options" value="day" id="option1"> Aujourd'hui
+                          </label>
+                          <label onclick="filter2('week')" class="btn btn-primary">
+                            <input type="radio" name="options" value="week" id="option2">  Semaine
+                          </label>
+                          <label onclick="filter2('month')" class="btn btn-primary active">
+                            <input type="radio" name="options" value="month" id="option3"> Mois
+                          </label>
+                          <label onclick="filter2('year')" class="btn btn-primary">
+                            <input type="radio" name="options" value="month" id="option4"> Année
+                          </label>
+                        </div>
+                        </div>
+                      <h5 class="text-primary">
+                          Choix Utilisateur
+                      </h5>
+                      <div class="ml-3 p-3" style="border: 1px solid grey;">
+<!--                      <form>-->
+                      <div>
+                          <div class="form-group">
+                        <label for="datetimepicker1"><i class="fa fa-calendar"></i> Date début</label>
+
+                        <input required class="form-control" type="date" id="datetimepicker1">
+                        <input required class="form-control" type="time" id="datetimepicker_1" value="00:00">
+
+                    </div>
+                </div>
+                <div>
+                    <div class="form-group">
+                        <label for="datetimepicker2"><i class="fa fa-calendar"></i> Date Fin</label>
+                       <input class="form-control" type="date" id="datetimepicker2">
+                        <input class="form-control" type="time" id="datetimepicker_2" value="00:00">
+                    </div>
+                </div>
+                      <button onclick="filter(event)" id="filter" class="btn btn-warning">Appliquer</button>
+<!--                          </form>-->
+                      </div>
+                  </div>
+              </div>
+</div>
+</div>
+<div class="row">
   <div class="card">
                 <div class="card-header card-header-warning">
-                  <h4 class="card-title ">Historique Plages températures</h4>
+                  <h4 class="card-title font-weight-bold">Historique Plages températures</h4>
                   <p class="card-category font-weight-bold"> Les plages de différentes températures</p>
                 </div>
                 <div class="card-body">
                   <div class="table-responsive">
                     <table class="table table-hover">
-                      <thead class=" text-primary font-weight-bold">
-                        <th>
+                      <thead class="text-primary thead-dark">
+                        <th class="font-weight-bold">
                           Plages
                         </th>
-                        <th>
+                        <th class="font-weight-bold">
                           Date début
                         </th>
-                        <th>
+                        <th class="font-weight-bold">
                           Date Fin
                         </th>
-                        <th>
+                        <th class="font-weight-bold">
                           Durée
                         </th>
                       </thead>
@@ -93,5 +147,5 @@ Historique Alarme
 <!--<script src="{% static 'doughnutchart.js'%}"></script>-->
 <!--<script src="{% static 'chartyearline.js'%}"></script>-->
 <!--<script src="{% static 'chartstackbar.js'%}"></script>-->
-<!--<script src="{% static 'myscript2.js'%}"></script>-->
+<!--<script src="{% static 'mainscript.js'%}"></script>-->
 {% endblock %}

@@ -231,7 +231,7 @@ function generateLineConfig(title, data, annotations) {
                     ticks: {
                         autoSkip: true,
                         beginAtZero: true,
-                        autoSkipPadding: 75,
+                        autoSkipPadding: 20,
                         major: {
                             enabled: true,
                             fontStyle: 'bold'
@@ -303,124 +303,109 @@ function generateLineConfig(title, data, annotations) {
     }
 }
 
-    var colorNames = Object.keys(window.chartColors);
+var colorNames = Object.keys(window.chartColors);
 
 
-    function addData(chart, data, i = 4, update = true) {
+function addData(chart, data, i = 4, update = true) {
 //    chart.data.datasets.forEach((dataset) => {
 //        dataset.data.push(data);
 //    });
-        chart.data.datasets[i].data.push(data);
-        if (update) chart.update();
-    }
+    chart.data.datasets[i].data.push(data);
+    if (update) chart.update();
+}
 
-    function newValue(chart, date, value, i = 4, update = true) {
+function newValue(chart, date, value, i = 4, update = true) {
 
-        addData(chart, {
-            t: date.valueOf(),
-            y: value
-        }, i, update);
-        if (i === 0)
-            if (updateCount > numberElements) {
-                chart.data.labels.shift();
-                chart.data.datasets[i].data.shift();
-            } else updateCount++;
-    }
+    addData(chart, {
+        t: date.valueOf(),
+        y: value
+    }, i, update);
+    if (i === 0)
+        if (updateCount > numberElements) {
+            chart.data.labels.shift();
+            chart.data.datasets[i].data.shift();
+        } else updateCount++;
+}
 
-    function newValue2(chart) {
-        var array = new Array();
-        for (var i = 0; i < 4; i++)
-            for (var j = 0; j < 12; j++)
-                addData(chart, {
-                    t: new Date(year = 2020, month = j),
-                    y: fixedData[i]
-                }, i, true);
-        chart.update()
-    }
-
-
-    function removeData(chart) {
-        chart.data.labels.pop();
-        chart.data.datasets.forEach((dataset) => {
-            dataset.data.pop();
-        });
-        chart.update();
-    }
+function newValue2(chart) {
+    var array = new Array();
+    for (var i = 0; i < 4; i++)
+        for (var j = 0; j < 12; j++)
+            addData(chart, {
+                t: new Date(year = 2020, month = j),
+                y: fixedData[i]
+            }, i, true);
+    chart.update()
+}
 
 
-    var $lineChart = $('#canvas');
-    var ctx = $lineChart[0].getContext("2d");
-    var tempValue = $('#tempValue');
-    var chart1 = new Chart.Line(ctx, generateLineConfig('',data2, annotations1));
+function removeData(chart) {
+    chart.data.labels.pop();
+    chart.data.datasets.forEach((dataset) => {
+        dataset.data.pop();
+    });
+    chart.update();
+}
 
-    var $lineChart2 = $('#canvas2');
-    var ctx2 = $lineChart2[0].getContext("2d");
-    var chart2 = new Chart.Line(ctx2, generateLineConfig('Température annuelle', data1, annotations2));
+function addDataIntervall() {
+    dd = generateOneData();
+    addData(chart, dd);
+}
 
-    function addDataIntervall() {
-        dd = generateOneData();
-        addData(chart, dd);
-    }
+var ajax_call = function () {
+    $.ajax({
+        url: $lineChart.data("url"),
 
-    var ajax_call = function () {
-        $.ajax({
-            url: $lineChart.data("url"),
-
-            success: function (data) {
-                newValue(chart1, new Date(data.data.date), data.data.value, 0);
-                tempValue.text(data.data.value);
+        success: function (data) {
+            newValue(chart1, new Date(data.data.date), data.data.value, 0);
+            tempValue.text(data.data.value);
 //            $.each(data.data, function (i, d) {
 //                addData(chart, data.labels[i], d);
 //            })
-            }
-        });
-    };
+        }
+    });
+};
 
-    var ajax_call2 = function () {
-        $.ajax({
-            url: $lineChart2.data("url"),
-            success: function (data) {
+//var ajax_call2 = function () {
+//    $.ajax({
+//        url: $lineChart2.data("url"),
+//        success: function (data) {
+//
+////        newValue2(chart2);
+//            $.each(data.data, function (i, d) {
+////                 if (i===0 || i===data.data.length)
+////                for (var j=0; j<4;j++) newValue(chart2, new Date(d.date), fixedData[j], j);
+//                newValue(chart2, new Date(d.date), d.value);
+//            });
+//        }
+//    });
+//};
 
-//        newValue2(chart2);
-                $.each(data.data, function (i, d) {
-//                 if (i===0 || i===data.data.length)
-//                for (var j=0; j<4;j++) newValue(chart2, new Date(d.date), fixedData[j], j);
-                    newValue(chart2, new Date(d.date), d.value);
-                });
-            }
-        });
-    };
+async function call2() {
+    var data = queryset;
+    console.log(queryset.length);
+    var datomax = moment();
+    datomax.set({'month': 0});
+    datomax.startOf('month');
 
-    async function call2() {
-        var data = queryset;
-        console.log(queryset.length);
-        var datomax = moment();
-        datomax.set({'month': 0});
-        datomax.startOf('month');
-
-        $.each(data, function (i, d) {
+    $.each(data, function (i, d) {
 //            if (i === 0 || i === data.length - 1)
 //                for (var j = 0; j < 4; j++) newValue(chart2, new Date(d.date), fixedData[j], j);
-            newValue(chart2, new Date(d.date), d.value, 4, false);
-        });
+        newValue(chart2, new Date(d.date), d.value, 4, false);
+    });
+    chart2.update();
+    for (var j=1;j<13;j++) {
+        for (var i = 0; i < 4; i++)
+            newValue(chart2, datomax, fixedData[i], i, false);
         chart2.update();
-        for (var j=1;j<13;j++) {
-            for (var i = 0; i < 4; i++)
-                newValue(chart2, datomax, fixedData[i], i, false);
-            chart2.update();
-            datomax.set({'month': j});
-            datomax.endOf('month');
-        }
+        datomax.set({'month': j});
+        datomax.endOf('month');
     }
+}
 
-    call2();
-    ajax_call();
-    var interval = 1000; // 1 secs
-    setInterval(ajax_call, interval);
-
-    window.resetZoom = function (chart) {
-        chart.resetZoom();
-    };
-    window.clearChart = function () {
-        chart.clear();
-    };
+window.resetZoom = function (chart) {
+    chart.resetZoom();
+};
+window.clearChart = function () {
+    chart.clear();
+};

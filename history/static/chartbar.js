@@ -66,9 +66,33 @@ var barChartData = {
 			]
 
 		};
-        var ctx = document.getElementById('canvas1').getContext('2d');
-        var ctx2 = document.getElementById('canvas2').getContext('2d');
-        var ctx3 = document.getElementById('canvas3').getContext('2d');
-        window.myBar = generateChart(ctx, 'Jour', barChartData)
-        window.myBar = generateChart(ctx2, 'Mois', barChartData)
-        window.myBar = generateChart(ctx3, 'Année', barChartData)
+var ctx = document.getElementById('canvas1').getContext('2d');
+var ctx2 = document.getElementById('canvas2').getContext('2d');
+var ctx3 = document.getElementById('canvas3').getContext('2d');
+window.myBar = generateChart(ctx, 'Jour', barChartData)
+window.myBar = generateChart(ctx2, 'Mois', barChartData)
+window.myBar = generateChart(ctx3, 'Année', barChartData)
+
+
+
+function filter(event) {
+    var date1 = $("#datetimepicker1");
+    var date_1 = $("#datetimepicker_1");
+    var date2 = $("#datetimepicker2");
+    var date_2= $("#datetimepicker_2");
+    console.log(date1);
+    var url = 'http://'+window.location.host+"/history_alarm/";
+    if (date1) {
+        var url = url+'?date1='+date1.val()+" "+date_1.val()+
+        '&date2='+date2.val()+" "+date_2.val()
+    }
+    window.open(url, '_self')
+}
+
+function filter2(val) {
+    console.log(val);
+    console.log(window.location.host);
+    var url = 'http://'+window.location.host+"/history_alarm/";
+    var url = url+'?filter='+val
+    window.open(url, '_self')
+}
