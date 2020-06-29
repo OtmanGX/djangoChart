@@ -165,9 +165,9 @@ var data1 = {
         data: [],
         fill:false,
 //            data: [{t: date.valueOf(),y: 0}],
-        pointRadius: 3,
+        pointRadius: 2,
         lineTension: 0,
-        borderWidth: 2
+        borderWidth: 3
     }]
 }
 var data2 = {
@@ -189,7 +189,6 @@ var data2 = {
 function generateLineConfig(title, data, annotations) {
     return {
         type: 'line',
-        defaultFontColor: '#ffffff',
         title: {text: title, fontColor: '#ffffff', display: true},
         data: data,
         options: {
@@ -218,7 +217,7 @@ function generateLineConfig(title, data, annotations) {
                     time: {
                         parser: timeFormat,
                         displayFormats: {
-                        millisecond: 'H:mm:ss.SSS',
+                        millisecond: 'H:mm:ss',
                         second: 'H:mm:ss',
                         minute: 'H:mm',
                         hour: 'H',
@@ -291,10 +290,19 @@ function generateLineConfig(title, data, annotations) {
             plugins: {
                 ChartDataLabels: false,
                 zoom: {
-                    zoom: {
+                    pan: {
+                        // Boolean to enable panning
                         enabled: true,
-                        drag: dragOptions,
-                        mode: 'x',
+
+                        // Panning directions. Remove the appropriate direction to disable
+                        // Eg. 'y' would only allow panning in the y direction
+                        mode: 'xy'
+                },
+                    zoom: {
+                        drag: false,
+                        enabled: true,
+//                        drag: dragOptions,
+//                        mode: 'x',
                         speed: 0.05
                     }
                 }
@@ -406,6 +414,7 @@ async function call2() {
 window.resetZoom = function (chart) {
     chart.resetZoom();
 };
+
 window.clearChart = function () {
     chart.clear();
 };

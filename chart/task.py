@@ -8,7 +8,7 @@ from datetime import datetime
 
 from django.utils import timezone
 
-SERIAL_PORT = "/dev/ttyACM0"
+SERIAL_PORT = "/dev/ttyUSB0"
 
 
 class TemperatureMsg:
@@ -25,7 +25,8 @@ class TemperatureMsg:
         self.msg = msg
         self.temp = float(msg.split(";")[1])/100
         self.date = datetime.now(tz=timezone.utc)
-        if abs(self.temp-TemperatureMsg.lastValue) > 0.5:
+        # if abs(self.temp-TemperatureMsg.lastValue) > 0.5:
+        if self.temp != TemperatureMsg.lastValue:
             self.save()
             TemperatureMsg.lastValue = self.temp
         # obj = self.save()

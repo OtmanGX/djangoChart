@@ -32,9 +32,12 @@ function generateChart(ctx, title, data) {
                         stacked: false,
                     }],
                     yAxes: [{
+                        ticks: {
+                            autoSkip: true,
+                            beginAtZero: true,},
                         scaleLabel: {
-                    display: true,
-                    labelString: 'Hours',
+                        display: true,
+                        labelString: 'Hours',
                 }
                     }]
                 }
@@ -42,8 +45,10 @@ function generateChart(ctx, title, data) {
         });
 }
 
+
+
 var barChartData = {
-            labels: ['Plages'],
+            labels: [''],
 			datasets: [{
 				backgroundColor: window.chartColors.green2,
 				label: 'Plage Normale',
@@ -66,12 +71,40 @@ var barChartData = {
 			]
 
 		};
+
+function generateData(data) {
+    return {
+            labels: [''],
+			datasets: [{
+				backgroundColor: window.chartColors.green2,
+				label: 'Plage Normale',
+				data: [
+					data[0]
+				]
+			},{
+				backgroundColor: window.chartColors.orange,
+				label: 'Plage Alarme',
+				data: [
+					data[1]
+				]
+			},{
+				backgroundColor: window.chartColors.red2,
+				label: 'Plage Arrêt',
+				data: [
+					data[2]
+				]
+			},
+			]
+
+		};
+
+}
 var ctx = document.getElementById('canvas1').getContext('2d');
 var ctx2 = document.getElementById('canvas2').getContext('2d');
 var ctx3 = document.getElementById('canvas3').getContext('2d');
-window.myBar = generateChart(ctx, 'Jour', barChartData)
-window.myBar = generateChart(ctx2, 'Mois', barChartData)
-window.myBar = generateChart(ctx3, 'Année', barChartData)
+window.myBar = generateChart(ctx, 'Jour', generateData(barData[2]))
+window.myBar = generateChart(ctx2, 'Mois', generateData(barData[1]))
+window.myBar = generateChart(ctx3, 'Année', generateData(barData[0]))
 
 
 

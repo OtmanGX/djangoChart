@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% load static %}
+{% load poll_extras %}
 {% block title_brand %}
 Historique Alarme
 {% endblock %}
@@ -46,22 +47,22 @@ Historique Alarme
                       </h5>
                       <div class="ml-3 mb-3">
                       <div class="btn-group btn-group-toggle" data-toggle="buttons">
-                          <label onclick="filter2('day')" class="btn btn-primary">
+                          <label onclick="filter2('day')" class="btn btn-primary {% if request.GET.filter == 'day' %}active{% endif %}">
                             <input type="radio" onclick="filter2(this.value)" name="options" value="day" id="option1"> Aujourd'hui
                           </label>
-                          <label onclick="filter2('week')" class="btn btn-primary">
+                          <label onclick="filter2('week')" class="btn btn-primary {% if request.GET.filter == 'week' %}active{% endif %}">
                             <input type="radio" name="options" value="week" id="option2">  Semaine
                           </label>
-                          <label onclick="filter2('month')" class="btn btn-primary active">
+                          <label onclick="filter2('month')" class="btn btn-primary {% if request.GET.filter is None or request.GET.filter == 'month' %}active{% endif %}">
                             <input type="radio" name="options" value="month" id="option3"> Mois
                           </label>
-                          <label onclick="filter2('year')" class="btn btn-primary">
+                          <label onclick="filter2('year')" class="btn btn-primary {% if request.GET.filter == 'year' %}active{% endif %}">
                             <input type="radio" name="options" value="month" id="option4"> Année
                           </label>
                         </div>
                         </div>
                       <h5 class="text-primary">
-                          Choix Utilisateur
+                          Choix Utilisateur {{request.GET.filter}}
                       </h5>
                       <div class="ml-3 p-3" style="border: 1px solid grey;">
 <!--                      <form>-->
@@ -129,7 +130,7 @@ Historique Alarme
                             {{item.3|date:"d M Y H:m:s"}}
                           </td>
                           <td>
-                            {{ item.4 }}
+                            {{ item.4|localefr }}
                           </td>
                         </tr>
                       {% endfor %}
@@ -139,6 +140,9 @@ Historique Alarme
                 </div>
   </div>
 </div>
+<script>
+    var barData = {{barData}};
+</script>
 <script src="{% static 'chartbar.js'%}"></script>
 <!--<script type="text/javascript">-->
 <!--    var queryset = JSON.parse('{{queryset|safe}}');-->

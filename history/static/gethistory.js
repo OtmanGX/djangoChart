@@ -12,7 +12,9 @@ var history_call = async function (url) {
             });
             chart.update();
             $.each(data.data, function (i, d) {
-                console.log(d);
+                if (i===0 || i===data.data.length-1)
+                for (var j = 0; j < 4; j++)
+                    newValue(chart, new Date(d.date), fixedData[j], j, false);
                 newValue(chart, new Date(d.date), d.value, 4, false);
             });
             chart.update();

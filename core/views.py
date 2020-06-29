@@ -1,15 +1,11 @@
 import json
 from datetime import datetime
-
 from django.shortcuts import render
 from django.http import JsonResponse
 from django.utils import timezone
 from .models import *
 import threading
 from random import randrange
-
-
-
 
 thread = None
 for t in threading.enumerate():
@@ -30,7 +26,7 @@ def dashboard(request):
     paths = ['/', '/dashboard/']
     data = []
     queryset = Temperature.objects.filter(created_at__year=timezone.now().year)
-    data = map(lambda x: {'date':x.created_at.isoformat(), 'value': x.value}, queryset)
+    data = map(lambda x: {'date': x.created_at.isoformat(), 'value': x.value}, queryset)
     data = json.dumps(list(data))
     print('ready')
     return render(request, 'dashboard.html',
@@ -45,5 +41,5 @@ def month_perc(request):
 def temp_api(request):
     return JsonResponse(data={
         # 'data': thread.q.get()
-        'data': {'value':randrange(30), 'date': datetime.now().isoformat()}
+        'data': {'value': randrange(30), 'date': datetime.now().isoformat()}
     })
