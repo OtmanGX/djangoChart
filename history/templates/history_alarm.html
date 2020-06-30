@@ -1,8 +1,7 @@
 {% extends 'base.html' %}
 {% load static %}
 {% load poll_extras %}
-{% block title_brand %}
-Historique Alarme
+{% block header %}
 {% endblock %}
 {% block content %}
 
@@ -148,7 +147,7 @@ Historique Alarme
 <!--    var queryset = JSON.parse('{{queryset|safe}}');-->
 <!--    var LIMITS = ['{{limits.0}}', '{{limits.1}}', '{{limits.2}}', '{{limits.3}}', '{{limits.4}}'];-->
 <!--</script>-->
-<!--<script src="{% static 'doughnutchart.js'%}"></script>-->
+<!--<script src="{% static 'repartitioncharts.js'%}"></script>-->
 <!--<script src="{% static 'chartyearline.js'%}"></script>-->
 <!--<script src="{% static 'chartstackbar.js'%}"></script>-->
 <!--<script src="{% static 'mainscript.js'%}"></script>-->

@@ -4,10 +4,10 @@ var date = moment();
 var timeFormat = 'LLL';
 var now = window.moment();
 var dragOptions = {
-    animationDuration: 1000
+    animationDuration: 500
 };
 var color = Chart.helpers.color;
-var numberElements = 100;
+var numberElements = 60;
 var fixedData = LIMITS;
 var updateCount = 0;
 
@@ -20,7 +20,6 @@ function beforeNineThirty(date) {
     return date.hour() < 9 || (date.hour() === 9 && date.minute() < 30);
 }
 
-// Returns true if outside 9:30am-4pm on a weekday
 function outsideMarketHours(date) {
     if (date.isoWeekday() > 5) {
         return true;
@@ -43,7 +42,6 @@ function randomBar(date, lastClose) {
         y: close
     };
 }
-
 
 function generateData() {
     // var date = moment('Jan 01 1990', 'MMM DD YYYY');
@@ -68,9 +66,7 @@ function generateData() {
 }
 
 function generateOneData() {
-    // var date = moment('Jan 01 1990', 'MMM DD YYYY');
     date.add(1, unit);
-    // date = date.clone().add(5, unit).startOf(unit)
     return randomBar(date, 10);
 }
 
@@ -157,8 +153,6 @@ var data1 = {
         fill: 1
     },{
         label: 'T°',
-        fontColor: '#ffffff',
-//            title: {text:'temperature', fontColor: '#ffffff', display:true},
         backgroundColor: color(window.chartColors.blue).alpha(0.5).rgbString(),
         backgroundColor: utils.transparentize(window.chartColors.yellow2),
         borderColor: window.chartColors.yellow2,
@@ -185,9 +179,8 @@ var data2 = {
     }]
 }
 
-//firstData = generateData();
 function generateLineConfig(title, data, annotations) {
-    return {
+    var config =  {
         type: 'line',
         title: {text: title, fontColor: '#ffffff', display: true},
         data: data,
@@ -211,7 +204,8 @@ function generateLineConfig(title, data, annotations) {
             scales: {
                 xAxes: [{
                     gridLines: {
-                        display: false
+                        display: false,
+                        drawBorder: false
                     },
                     type: 'time',
                     time: {
@@ -254,8 +248,8 @@ function generateLineConfig(title, data, annotations) {
                     ticks: {
                         autoSkip: true,
                         stepSize: 1,
-                        min: fixedData[0]-2,
-                        max: 26
+                        suggestedMin: fixedData[0]-2,
+                        suggestedMax: 26
                     },
                     display: true,
                     type: 'linear',
@@ -301,12 +295,23 @@ function generateLineConfig(title, data, annotations) {
                         enabled: true,
 //                        drag: dragOptions,
                         mode: 'x',
+                        // Minimal zoom distance required before actually applying zoom
+                        threshold: 10,
+
+                        // On category scale, minimal zoom level before actually applying zoom
+                        sensitivity: 15,
                         speed: 0.05
                     }
                 }
             },
         },
     }
+
+    if (title === '') {
+        console.log('real time');
+        config.options.animation.duration = 400;
+    }
+    return config
 }
 
 var colorNames = Object.keys(window.chartColors);
@@ -320,13 +325,13 @@ function addData(chart, data, i = 4, update = true) {
     if (update) chart.update();
 }
 
-function newValue(chart, date, value, i = 4, update = true) {
+function newValue(chart, date, value, i = 4, update = true, shift=false) {
 
     addData(chart, {
         t: date.valueOf(),
         y: value
     }, i, update);
-    if (i === 0)
+    if (i === 0 && shift)
         if (updateCount > numberElements) {
             chart.data.labels.shift();
             chart.data.datasets[i].data.shift();
@@ -358,69 +363,20 @@ function addDataIntervall() {
     addData(chart, dd);
 }
 
-var ajax_call = function () {
-    $.ajax({
-        url: $lineChart.data("url"),
-
-        success: function (data) {
-            console.log(data);
-            newValue(chart1, new Date(data.data.date), data.data.value, 0);
-            tempValue.text(data.data.value);
-//            $.each(data.data, function (i, d) {
-//                addData(chart, data.labels[i], d);
-//            })
-        }
-    });
-};
-
-//var ajax_call2 = function () {
-//    $.ajax({
-//        url: $lineChart2.data("url"),
-//        success: function (data) {
-//
-////        newValue2(chart2);
-//            $.each(data.data, function (i, d) {
-////                 if (i===0 || i===data.data.length)
-////                for (var j=0; j<4;j++) newValue(chart2, new Date(d.date), fixedData[j], j);
-//                newValue(chart2, new Date(d.date), d.value);
-//            });
-//        }
-//    });
-//};
-
-async function call2() {
-    var data = queryset;
-    console.log(queryset.length);
-    var datomax = moment();
-    datomax.set({'month': 0});
-    datomax.startOf('month');
-
-    $.each(data, function (i, d) {
-//            if (i === 0 || i === data.length - 1)
-//                for (var j = 0; j < 4; j++) newValue(chart2, new Date(d.date), fixedData[j], j);
-        newValue(chart2, new Date(d.date), d.value, 4, false);
-    });
-    chart2.update();
-    for (var j=1;j<13;j++) {
-        for (var i = 0; i < 4; i++)
-            newValue(chart2, datomax, fixedData[i], i, false);
-        chart2.update();
-        datomax.set({'month': j});
-        datomax.endOf('month');
-    }
-}
-
 window.resetZoom = function (chart) {
     chart.resetZoom();
 };
 
-window.clearChart = function () {
-    chart.clear();
+window.clearChart = function (chart) {
+    console.log("clear called");
+    chart.data.labels = [];
+    chart.data.datasets.forEach((dataset) => {
+        dataset.data = [];
+    });
+    chart.update();
 };
 
-function displayTime() {
-    $("#timeValue").text(moment().format("D-MM-Y H:m:ss"));
-}
 
-var interval = 1000; // 1 secs
-setInterval(displayTime, interval);
+function sleep(ms) {
+      return new Promise(resolve => setTimeout(resolve, ms));
+}

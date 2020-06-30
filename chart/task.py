@@ -3,7 +3,7 @@ from queue import Queue
 import serial
 import time
 import re
-from core.models import Temperature
+from core.models import Temperature, MARGE
 from datetime import datetime
 
 from django.utils import timezone
@@ -25,8 +25,8 @@ class TemperatureMsg:
         self.msg = msg
         self.temp = float(msg.split(";")[1])/100
         self.date = datetime.now(tz=timezone.utc)
-        # if abs(self.temp-TemperatureMsg.lastValue) > 0.5:
-        if self.temp != TemperatureMsg.lastValue:
+        if abs(self.temp-TemperatureMsg.lastValue) > MARGE:
+        # if self.temp != TemperatureMsg.lastValue:
             self.save()
             TemperatureMsg.lastValue = self.temp
         # obj = self.save()
@@ -45,7 +45,7 @@ class TemperatureMsg:
 class SerialThread(Thread):
     def __init__(self):
         super().__init__(name="serialThread")
-        self.q = Queue(maxsize=3)
+        self.q = Queue(maxsize=5)
         self.count = 0
     def run(self):
         ser = None
@@ -60,9 +60,13 @@ class SerialThread(Thread):
                     if t is not None :
                         print(t.temp)
                         if self.q.full():
-                            self.q.get()
+                            with self.q.mutex:
+                                self.q.queue.clear()
                         self.q.put(t.get())
-                        # t.save()
+                        self.q.put(t.get())
+                        self.q.put(t.get())
+                        self.q.put(t.get())
+                        self.q.put(t.get())
             except Exception as e:
                 ser = None
                 print(e)

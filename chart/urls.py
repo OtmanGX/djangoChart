@@ -29,10 +29,11 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     # Core
     path('', core_views.dashboard, name='home'),
-    path('temp_all_api/', history_views.temp_all_api, name='temp_all_api'),
     path('temp_last_data/', core_views.temp_api, name='temp_api'),
     path('dashboard/', core_views.dashboard, name='dashboard'),
+    path('bar_result/', core_views.bar_result_view, name='bar result'),
     # History
     path('history/', history_views.history, name='history'),
     path('history_alarm/', history_views.history_alarm, name='history_alarm'),
+path('temp_all_api/', history_views.temp_all_api, name='temp_all_api'),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

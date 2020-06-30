@@ -37,7 +37,7 @@ function generateChart(ctx, title, data) {
                             beginAtZero: true,},
                         scaleLabel: {
                         display: true,
-                        labelString: 'Hours',
+                        labelString: 'Heures',
                 }
                     }]
                 }

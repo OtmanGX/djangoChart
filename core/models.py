@@ -1,16 +1,6 @@
 from django.db import models
 
 
-class Country(models.Model):
-    name = models.CharField(max_length=30)
-
-
-class City(models.Model):
-    name = models.CharField(max_length=30)
-    country = models.ForeignKey(Country, on_delete=models.CASCADE)
-    population = models.PositiveIntegerField()
-
-
 class Temperature(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     value = models.FloatField(blank=False)
@@ -18,4 +8,4 @@ class Temperature(models.Model):
 
 # Limits
 LIMITS = [14, 18, 21, 23, 15]
-MARGE = 0.5
+MARGE = 0.1

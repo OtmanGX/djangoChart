@@ -31,9 +31,9 @@
             </a>
           </li>
 
-          <div class="ml-4 collapse" id="navbarToggleExternalContent">
+          <div class="ml-4" id="navbarToggleExternalContent">
               <ul class="nav">
-                <li class="nav-item  {% if request.path == '/history/' %}active{% endif %}">
+                <li class="nav-item {% if request.path == '/history/' %}active{% endif %}">
                 <a class="nav-link" href="{% url 'history' %}">
                   <i class="material-icons">history</i>
                   <p>Historique générale</p>
@@ -55,12 +55,44 @@
     </div>
     <div class="main-panel">
       <!-- Navbar -->
-      <nav class="navbar navbar-expand-lg navbar-transparent navbar-absolute fixed-top m-0">
+      <nav class="navbar navbar-expand-lg navbar-transparent navbar-absolute fixed-top mb-0">
         <div class="container-fluid">
-          <div class="navbar-wrapper">
-            <a class="navbar-brand" href="#">{% block title_brand %}
-            {% endblock %}</a>
+<!--          <div class="navbar-wrapper">-->
+<!--            <a class="navbar-brand text-dark font-weight-bold" href="#">-->
+<!--              {% block title_brand %}-->
+<!--            {% endblock %}</a>-->
+
+
+
+<!--          </div>-->
+
+            {% block header %}
+
+          <div class="card card-stats w-25 mr-2" style="height:65px;">
+                <div class="card-header card-header-success card-header-icon">
+                  <div class="card-icon display-4 font-weight-bold">
+                    <span class="material-icons">
+                    query_builder
+                    </span>
+                  </div>
+                  <p class="card-category font-weight-bold text-dark m-0" style="font-size:1.4em">Heure actuelle</p>
+                  <h3 class="card-title" style="font-size:1.3em"> <span id="timeValue"></span>
+                  </h3>
+                </div>
           </div>
+
+          <div class="card card-stats w-25" style="height:65px;">
+                <div class="card-header card-header-warning card-header-icon">
+                  <div class="card-icon display-4 font-weight-bold">
+                    °C
+                  </div>
+                  <p class="card-category text-dark font-weight-bold" style="font-size:1.4em">Température instantanée</p>
+                  <h3 class="card-title" style="font-size:1.3em"> <span id="tempValue"></span> ᵒC
+                  </h3>
+                </div>
+          </div>
+          {% endblock %}
+
           <button class="navbar-toggler" type="button" data-toggle="collapse" aria-controls="navigation-index" aria-expanded="false" aria-label="Toggle navigation">
             <span class="sr-only">Toggle navigation</span>
             <span class="navbar-toggler-icon icon-bar"></span>
@@ -106,18 +138,23 @@
           <nav class="float-left">
             <ul>
               <li>
-                <a href="/">
+                <a href="{% url 'home' %}">
                   Page d'Accueil
                 </a>
               </li>
               <li>
-                <a href="/dashboard">
+                <a href="{% url 'dashboard' %}">
                   Tableau de Bord
                 </a>
               </li>
               <li>
-                <a href="/historique">
-                  Historique
+                <a href="{% url 'history' %}">
+                  Historique Générale
+                </a>
+              </li>
+              <li>
+                <a href="{% url 'history_alarm' %}">
+                  Historique Plages
                 </a>
               </li>
             </ul>
@@ -126,7 +163,7 @@
             &copy;
             <script>
               document.write(new Date().getFullYear())
-            </script>, By GxOtman <b>MG ADVANCED TECHNOLOGY</b>
+            </script> <b>MG ADVANCED TECHNOLOGY</b>
           </div>
         </div>
       </footer>

@@ -2,15 +2,16 @@ var $historyChart = $('#historyCanvas');
 var ctx = $historyChart[0].getContext("2d");
 var chart = new Chart.Line(ctx, generateLineConfig('Température', data1, annotations2));
 
-var history_call = async function (url) {
+function history_call(url) {
     $.ajax({
         url: url,
-        success: function (data) {
+        success: async function (data) {
             chart.data.labels.pop();
             chart.data.datasets.forEach((dataset) => {
                 dataset.data = [];
             });
             chart.update();
+            await sleep(300);
             $.each(data.data, function (i, d) {
                 if (i===0 || i===data.data.length-1)
                 for (var j = 0; j < 4; j++)
@@ -38,7 +39,7 @@ function filter(event) {
     history_call(url);
 }
 
-function filter2(val) {
+async function filter2(val) {
     console.log(val);
     var url = $historyChart.data("url")+'?filter='+val
     history_call(url);

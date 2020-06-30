@@ -3,16 +3,19 @@ Chart.defaults.global.defaultFontColor = 'white';
 //Chart.plugins.unregister(ChartDataLabels);
 Chart.plugins.unregister(ChartDataLabels);
 window.dataLabelsConfig = {
-                        align:'start',
-                        display: 'auto',
-                        clamp:false,
+                        align:'center',
+                        display: true,
+                        clamp: true,
+                        clip: false,
                         backgroundColor: function(context) {
 							return context.dataset.backgroundColor;
 						},
 						borderColor: 'white',
 						borderRadius: 20,
 						borderWidth: 2,
-						color: 'white',
+						visibility: true,
+						offset: 0,
+		                color: 'white',
 //						display: function(context) {
 //							var dataset = context.dataset;
 //							var count = dataset.data.length;

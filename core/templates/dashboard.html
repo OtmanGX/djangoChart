@@ -1,26 +1,26 @@
 {% extends 'base.html' %}
 {% load static %}
-{% block title_brand %}
-Tableau de Bord
-{% endblock %}
+<!--{% block title_brand %}-->
+<!--Tableau de Bord-->
+<!--{% endblock %}-->
 {% block content %}
-<div class="row align-items-center">
-  <div class="col-lg-3 col-md-6 col-sm-6 align-self-center">
-              <div class="card card-stats">
-                <div class="card-header card-header-success card-header-icon">
-                  <div class="card-icon display-4 font-weight-bold">
-                    <span class="material-icons">
-                    query_builder
-                    </span>
-                  </div>
-                  <p class="card-category font-weight-bold m-0" style="font-size:1.4em">Heure actuelle</p>
-                  <h3 class="card-title" style="font-size:1.3em"> <span id="timeValue"></span>
-                  </h3>
-                </div>
-              </div>
-</div>
-</div>
-<div class="row">
+<!--<div class="row align-items-center">-->
+<!--  <div class="col-lg-3 col-md-6 col-sm-6 align-self-center">-->
+<!--              <div class="card card-stats">-->
+<!--                <div class="card-header card-header-success card-header-icon">-->
+<!--                  <div class="card-icon display-4 font-weight-bold">-->
+<!--                    <span class="material-icons">-->
+<!--                    query_builder-->
+<!--                    </span>-->
+<!--                  </div>-->
+<!--                  <p class="card-category font-weight-bold m-0" style="font-size:1.4em">Heure actuelle</p>-->
+<!--                  <h3 class="card-title" style="font-size:1.3em"> <span id="timeValue"></span>-->
+<!--                  </h3>-->
+<!--                </div>-->
+<!--              </div>-->
+<!--  </div>-->
+<!--</div>-->
+<div class="row mt-4">
   <button class="btn btn-warning" data-toggle="modal" data-target="#limiteModal">
     Plages températures <span class="material-icons">tune</span>
   </button>
@@ -29,21 +29,21 @@ Tableau de Bord
   </button>
 </div>
 
-<div class="row">
-  <div class="col-lg-3 col-md-6 col-sm-6">
-              <div class="card card-stats">
-                <div class="card-header card-header-warning card-header-icon">
-                  <div class="card-icon display-4 font-weight-bold">
-                    °C
-                  </div>
-                  <p class="card-category font-weight-bold">Température instantanée</p>
-                  <h3 class="card-title"> <span id="tempValue"></span> ᵒC
-                  </h3>
-                </div>
-              </div>
-</div>
+<!--<div class="row">-->
+<!--  <div class="col-lg-3 col-md-6 col-sm-6">-->
+<!--              <div class="card card-stats">-->
+<!--                <div class="card-header card-header-warning card-header-icon">-->
+<!--                  <div class="card-icon display-4 font-weight-bold">-->
+<!--                    °C-->
+<!--                  </div>-->
+<!--                  <p class="card-category font-weight-bold">Température instantanée</p>-->
+<!--                  <h3 class="card-title"> <span id="tempValue"></span> ᵒC-->
+<!--                  </h3>-->
+<!--                </div>-->
+<!--              </div>-->
+<!--</div>-->
 
-</div>
+<!--</div>-->
 <div class="row align-items-center">
   <div class="col-md-10 col-lg-6 col-sm-12 h-100">
     <div class="card card-chart">
@@ -76,7 +76,7 @@ Tableau de Bord
     <div class="card card-chart m-0">
       <div class="card-header card-header-primary m-0" style="background: linear-gradient(60deg, #2E3436, #000000);">
         <h4 class="font-weight-bold">Jour</h4>
-		<canvas id="canvas3" data-url="{% url 'temp_api' %}"></canvas>
+		<canvas id="canvas3" data-url="{% url 'bar result' %}"></canvas>
       </div>
     </div>
   </div>
@@ -93,7 +93,7 @@ Tableau de Bord
 
     </div>
           <div class="row">
-        <button class="btn btn-success">Mise à jour</button>
+        <button class="btn btn-success" onclick="ajaxRepartition()">Mise à jour <i class="material-icons">refresh</i></button>
       </div>
   </div>
 
@@ -105,13 +105,13 @@ Tableau de Bord
     <div class="card card-chart">
       <div class="card-header card-header-primary" style="background: linear-gradient(60deg, #2E3436, #000000);">
 		<h4 class="font-weight-bold">Année en cours</h4>
-        <canvas id="canvas4"></canvas>
+        <canvas id="canvas4" data-url="{% url 'bar result' %}"></canvas>
       </div>
     </div>
   </div>
     </div>
     </div>
-                </div>
+     </div>
     </div>
 
 
@@ -125,7 +125,7 @@ Tableau de Bord
   <div class="col-12">
     <div class="card card-chart">
       <div class="card-header" style="background: linear-gradient(60deg, #2E3436, #000000);">
-		<canvas id="canvas2" data-url="{% url 'temp_all_api' %}"></canvas>
+		<canvas id="canvas2" data-url="{% url 'temp_all_api' %}?filter=year"></canvas>
       </div>
       <div class="card-body">
         <h4 class="card-title font-weight-bold">Température annuelle</h4>
@@ -134,7 +134,7 @@ Tableau de Bord
       <div class="card-footer">
         <div class="stats">
           <button class="btn btn-primary" onclick="resetZoom(chart2)">réinitialiser le zoom</button>
-          <button class="btn btn-success">Mise à jour</button>
+          <button class="btn btn-success" onclick="ajaxYearHistory()">Mise à jour <i class="material-icons">refresh</i></button>
         </div>
       </div>
     </div>
@@ -230,9 +230,8 @@ Tableau de Bord
     var LIMITS = ['{{limits.0}}', '{{limits.1}}', '{{limits.2}}', '{{limits.3}}', '{{limits.4}}'];
     var barData = {{barData}};
 </script>
-<script src="{% static 'doughnutchart.js'%}"></script>
+<script src="{% static 'repartitioncharts.js'%}"></script>
 <script src="{% static 'chartyearline.js'%}"></script>
-<script src="{% static 'chartstackbar.js'%}"></script>
 <script src="{% static 'mainscript.js'%}"></script>
 <script src="{% static 'dashboard.js'%}"></script>
 {% endblock %}
