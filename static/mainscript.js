@@ -326,16 +326,16 @@ function addData(chart, data, i = 4, update = true) {
 }
 
 function newValue(chart, date, value, i = 4, update = true, shift=false) {
-
-    addData(chart, {
-        t: date.valueOf(),
-        y: value
-    }, i, update);
     if (i === 0 && shift)
         if (updateCount > numberElements) {
             chart.data.labels.shift();
             chart.data.datasets[i].data.shift();
         } else updateCount++;
+    addData(chart, {
+        t: date.valueOf(),
+        y: value
+    }, i, update);
+
 }
 
 function newValue2(chart) {

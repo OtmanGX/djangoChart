@@ -54,12 +54,13 @@ def history(request):
 
 
 def history_alarm(request):
+    now = timezone.now()
+    now = now.replace(hour=0, minute=0, second=0, microsecond=0)
     filter = request.GET.get("filter")
-    now = datetime.now().replace(tzinfo=timezone.utc)
-    day = now - timedelta(1)
-    week = now - timedelta(7)
-    month = now - timedelta(30)
-    year = now - timedelta(365)
+    day = now
+    week = now - timedelta(now.weekday())
+    month = now.replace(day=1)
+    year = now.replace(day=1, month=1)
     dataYear = Temperature.objects.filter(created_at__gte=year)
     dataYear = classify_temperatures(dataYear)
     dataMonth = dataYear.filter(created_at__gte=month)

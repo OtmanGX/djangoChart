@@ -93,7 +93,7 @@ window.resetZoom = function (chart) {
 
 
 function displayTime() {
-    $("#timeValue").text(moment().format("D-MM-Y HH:mm:ss"));
+    $("#timeValue").text(moment().format("DD-MM-Y HH:mm:ss"));
 }
 
 var interval = 1000; // 1 secs

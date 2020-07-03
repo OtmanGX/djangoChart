@@ -29,7 +29,7 @@ function generateConfig(title, data) {
     ],
 			data: {
 				datasets: [{
-				    borderColor: '#888A85',
+//				    borderColor: '#888A85',
 				    borderWidth: 1,
 					data: data,
 					backgroundColor: [
@@ -47,12 +47,12 @@ function generateConfig(title, data) {
 			},
 			options: {
 			    layout: {
-				padding: 2
+				padding: 20
 			},
 			    plugins: {
                     datalabels: window.dataLabelsConfig,
                 },
-				responsive: true,
+				responsive: false,
 				legend: {
 				    display: false,
 					position: 'top',
@@ -116,7 +116,7 @@ function generateConfig(title, data) {
                 datalabels: window.dataLabelsConfig,
             },
             layout: {
-				padding: 5
+				padding: 20
 			},
             legend: {
                 display: false,
@@ -133,7 +133,7 @@ function generateConfig(title, data) {
 					animateScale: true,
 					animateRotate: true
 				},
-            responsive: true,
+            responsive: false,
             scales: {
                 xAxes: [{
                     stacked: false,
@@ -168,9 +168,9 @@ var ajaxRepartition = async function () {
                window.myDoughnut2.data.datasets[0].data = data.bar_result[1];
                window.myDoughnut2.update()
 
-               window.myBar.data.datasets[0].data = []
-               window.myBar.data.datasets[1].data = []
-               window.myBar.data.datasets[2].data = []
+               window.myBar.data.datasets[0].data = [];
+               window.myBar.data.datasets[1].data = [];
+               window.myBar.data.datasets[2].data = [];
                window.myBar.update()
                window.myBar.data.datasets[0].data = [data.bar_result[2][0]];
                window.myBar.data.datasets[1].data = [data.bar_result[2][1]];

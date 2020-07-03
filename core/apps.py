@@ -13,10 +13,11 @@ class CoreConfig(AppConfig):
 
 def get_bar_result():
     bar_result = []
-    now = datetime.now().replace(tzinfo=timezone.utc)
-    day = now - timedelta(1)
-    month = now - timedelta(30)
-    year = now - timedelta(365)
+    now = timezone.now()
+    now = now.replace(hour=0, minute=0, second=0, microsecond=0)
+    day = now
+    month = now.replace(day=1)
+    year = now.replace(day=1, month=1)
     dataYear = Temperature.objects.filter(created_at__gte=year)
     dataYear = classify_temperatures(dataYear)
     dataMonth = dataYear.filter(created_at__gte=month)

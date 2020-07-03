@@ -9,3 +9,6 @@ thead, tbody tr {
     table-layout:fixed;/* even columns width , fix width of table too*/
 }
 
+.tr-orange {
+    background-color: #fea21e;
+}

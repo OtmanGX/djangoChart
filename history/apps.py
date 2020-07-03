@@ -25,6 +25,7 @@ def current_week(date):
     end_week = date
     return start_week.replace(tzinfo=timezone.utc), end_week.replace(tzinfo=timezone.utc)
 
+
 def extract_info(group):
     group = list(group[1])
     try:
@@ -58,23 +59,20 @@ def generate_dataframe(data):
 
 def calc_stats(dataframe):
     result = dataframe[['cat', 'duree']]
-    result.append({'cat': 0, 'duree': 0})
-    result.append({'cat': 1, 'duree': 0})
-    result.append({'cat': 2, 'duree': 0})
+    result = result.append([{'cat': i, 'duree': timedelta(0)} for i in range(3)], ignore_index=True)
     result = result.groupby('cat').sum()
-    # result['duree'] = result['duree'].astype('timedelta64[h]')
+    result['duree'] = result['duree'].astype('timedelta64[h]')
     result.fillna(0)
     return result['duree'].tolist()
 
 
 def calc_stats2(dataframe):
     result = dataframe[['cat', 'duree']]
-    result.append({'cat': 0, 'duree': 0})
-    result.append({'cat': 1, 'duree': 0})
-    result.append({'cat': 2, 'duree': 0})
+    result = result.append([{'cat': i, 'duree': timedelta(0)} for i in range(3)], ignore_index=True)
     result = result.groupby('cat').sum()
     result['duree'] = result['duree'].astype('timedelta64[h]')
     result['duree'] = result['duree']/result['duree'].sum()*100
+    result.fillna(0)
     result['duree'] = result['duree'].astype('int')
     result.fillna(0)
     return result['duree'].tolist()

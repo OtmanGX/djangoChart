@@ -56,7 +56,7 @@
                             <input type="radio" name="options" value="month" id="option3"> Mois
                           </label>
                           <label onclick="filter2('year')" class="btn btn-primary {% if request.GET.filter == 'year' %}active{% endif %}">
-                            <input type="radio" name="options" value="month" id="option4"> Année
+                            <input type="radio" name="options" value="year" id="option4"> Année
                           </label>
                         </div>
                         </div>
@@ -96,8 +96,8 @@
                 </div>
                 <div class="card-body">
                   <div class="table-responsive">
-                    <table class="table table-hover">
-                      <thead class="text-primary thead-dark">
+                    <table class="table">
+                      <thead class="text-primary thead-light">
                         <th class="font-weight-bold">
                           Plages
                         </th>
@@ -114,19 +114,19 @@
                       <tbody style="height:400px; overflow: scroll;">
                       {% for item in data %}
 
-                        <tr class="{% if item.0 == 0 %}table-success{% else %}
-                        {% if item.0 == 1%}table-warning
+                        <tr class="{% if item.0 == 0 %}bg-success{% else %}
+                        {% if item.0 == 1%}tr-orange
                         {% else %}
-                        {% if item.0 == 2%}table-danger
-                        {% endif %}{% endif %}{% endif %}">
+                        {% if item.0 == 2%}bg-danger
+                        {% endif %}{% endif %}{% endif %} text-dark">
                           <td>
                             {{item.1}}
                           </td>
                           <td>
-                            {{item.2|date:'d M Y H:m:s'}}
+                            {{item.2|date:'d M Y H:i:s'}}
                           </td>
                           <td>
-                            {{item.3|date:"d M Y H:m:s"}}
+                            {{item.3|date:"d M Y H:i:s"}}
                           </td>
                           <td>
                             {{ item.4|localefr }}
