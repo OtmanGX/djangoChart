@@ -51,30 +51,41 @@ def classify_temperatures(query):
 
 def generate_dataframe(data):
     data = pd.DataFrame(data)
-    data['first_date'] = data['first_date']
-    data['last_date'] = data['last_date']
-    data['duree'] = (data['last_date'] - data['first_date'])
+    if data.shape[0]==0:
+        data['first_date'] = []
+        data['last_date'] = []
+        data['duree'] = []
+    else:
+        data['first_date'] = data['first_date']
+        data['last_date'] = data['last_date']
+        data['duree'] = (data['last_date'] - data['first_date'])
     return data
 
 
 def calc_stats(dataframe):
-    result = dataframe[['cat', 'duree']]
-    result = result.append([{'cat': i, 'duree': timedelta(0)} for i in range(3)], ignore_index=True)
-    result = result.groupby('cat').sum()
-    result['duree'] = result['duree'].astype('timedelta64[h]')
-    result.fillna(0)
+    try:
+        result = dataframe[['cat', 'duree']]
+        result = result.append([{'cat': i, 'duree': timedelta(0)} for i in range(3)], ignore_index=True)
+        result = result.groupby('cat').sum()
+        result['duree'] = result['duree'].astype('timedelta64[h]')
+        result.fillna(0)
+    except Exception:
+        return []
     return result['duree'].tolist()
 
 
 def calc_stats2(dataframe):
-    result = dataframe[['cat', 'duree']]
-    result = result.append([{'cat': i, 'duree': timedelta(0)} for i in range(3)], ignore_index=True)
-    result = result.groupby('cat').sum()
-    result['duree'] = result['duree'].astype('timedelta64[h]')
-    result['duree'] = result['duree']/result['duree'].sum()*100
-    result.fillna(0)
-    result['duree'] = result['duree'].astype('int')
-    result.fillna(0)
+    try:
+        result = dataframe[['cat', 'duree']]
+        result = result.append([{'cat': i, 'duree': timedelta(0)} for i in range(3)], ignore_index=True)
+        result = result.groupby('cat').sum()
+        result['duree'] = result['duree'].astype('timedelta64[h]')
+        result['duree'] = result['duree']/result['duree'].sum()*100
+        result.fillna(0)
+        result['duree'] = result['duree'].astype('int')
+        result.fillna(0)
+    except Exception:
+        return []
     return result['duree'].tolist()
 
 
