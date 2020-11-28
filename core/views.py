@@ -48,11 +48,11 @@ def dashboard(request):
 
 
 def temp_api(request):
-    try:
-        data = thread.q.get_nowait()
-    except Exception:
-        data = None
+    # try:
+    #     data = thread.q.get_nowait()
+    # except Exception:
+    #     data = None
     return JsonResponse(data={
-        'data': data
-        # 'data': {'value': randrange(12, 27), 'date': datetime.now().replace(tzinfo=timezone.utc).isoformat()}
+        # 'data': data
+        'data': {'value': randrange(12, 26), 'date': timezone.now().isoformat()}
     })

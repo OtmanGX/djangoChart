@@ -23,10 +23,10 @@ class TemperatureMsg:
 
     def __init__(self, msg):
         self.msg = msg
-        self.temp = float(msg.split(";")[1])/100
+        self.temp = float(msg.split(";")[1]) / 100
         self.date = datetime.now(tz=timezone.utc)
-        if abs(self.temp-TemperatureMsg.lastValue) > MARGE:
-        # if self.temp != TemperatureMsg.lastValue:
+        if abs(self.temp - TemperatureMsg.lastValue) > MARGE:
+            # if self.temp != TemperatureMsg.lastValue:
             self.save()
             TemperatureMsg.lastValue = self.temp
         # obj = self.save()
@@ -36,10 +36,7 @@ class TemperatureMsg:
         return Temperature.objects.create(value=self.temp)
 
     def get(self):
-        return {'date':self.date, 'value':self.temp}
-
-
-
+        return {'date': self.date, 'value': self.temp}
 
 
 class SerialThread(Thread):
@@ -47,6 +44,7 @@ class SerialThread(Thread):
         super().__init__(name="serialThread")
         self.q = Queue(maxsize=5)
         self.count = 0
+
     def run(self):
         ser = None
         while (True):
@@ -54,10 +52,10 @@ class SerialThread(Thread):
                 if ser is None:
                     ser = serial.Serial(SERIAL_PORT, 9600, timeout=2)
                     time.sleep(2)
-                if ser is not None :
+                if ser is not None:
                     tram = ser.readline().decode().strip()
                     t = TemperatureMsg(tram)
-                    if t is not None :
+                    if t is not None:
                         print(t.temp)
                         if self.q.full():
                             with self.q.mutex:
@@ -73,8 +71,6 @@ class SerialThread(Thread):
                 time.sleep(1)
 
 
-
-if __name__=='__main__':
+if __name__ == '__main__':
     datetime.now(tz=timezone.utc)
     # SerialThread().start()
-

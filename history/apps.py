@@ -70,7 +70,7 @@ def calc_stats(dataframe):
         result['duree'] = result['duree'].astype('timedelta64[h]')
         result.fillna(0)
     except Exception:
-        return []
+        return [0]*3
     return result['duree'].tolist()
 
 
@@ -85,7 +85,7 @@ def calc_stats2(dataframe):
         result['duree'] = result['duree'].astype('int')
         result.fillna(0)
     except Exception:
-        return []
+        return [0]*3
     return result['duree'].tolist()
 
 
